@@ -34,6 +34,7 @@ class BaseModel:
         perfoms dave operation by updataing self.updated_at to the current time 
         """
         self.updated_at=datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """
