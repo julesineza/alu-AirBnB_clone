@@ -6,6 +6,7 @@ FileStorage class for serialization/deserialization
 
 import json 
 from models.base_model import BaseModel
+import os
 
 class FileStorage:
     """
@@ -22,7 +23,6 @@ class FileStorage:
             dict : a dictonary of all objects
         """
         
-        
         return FileStorage.__objects
 
     def new(self,obj):
@@ -32,7 +32,7 @@ class FileStorage:
             obj which is the object to be added
 
         """
-        key =self.__class__.__name__+self.id
+        key="{}.{}".format(obj.__class__.__name__, obj.id)
         FileStorage.__objects[key]=obj
 
     def save(self):
@@ -48,37 +48,21 @@ class FileStorage:
             json.dump(new_dict,json_file)
 
     def reload(self):
+         """
+        Deserializes the JSON file to __objects
+        Only if the JSON file exists, otherwise do nothing
         """
-        For deserializes the JSON file to __objects
-        """
-
-        try:
-            with open(FileStorage.__file_path, 'r', encoding='utf-8') as f:
-                obj_dict = json.load(f)
+        if os.path.exists(FileStorage.__file_path):
+            try:
+                with open(FileStorage.__file_path, 'r', encoding='utf-8') as f:
+                    obj_dict = json.load(f)
+                
+                from models.base_model import BaseModel
+                
+                for key, value in obj_dict.items():
+                    class_name = value['__class__']
+                    if class_name == 'BaseModel':
+                        FileStorage.__objects[key] = BaseModel(**value)
+            except Exception:
+                pass
             
-            # Recreate objects from dictionaries
-            for key, value in obj_dict.items():
-                class_name = value['__class__']
-                if class_name == 'BaseModel':
-                    FileStorage.__objects[key] = BaseModel(**value)
-        except FileNotFoundError:
-            
-            pass
-
-
-
-from models import storage
-from models.base_model import BaseModel
-
-all_objs = storage.all()
-print("-- Reloaded objects --")
-for obj_id in all_objs.keys():
-    obj = all_objs[obj_id]
-    print(obj)
-
-print("-- Create a new object --")
-my_model = BaseModel()
-my_model.name = "My_First_Model"
-my_model.my_number = 89
-my_model.save()
-print(my_model)   
