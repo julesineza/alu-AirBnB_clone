@@ -48,10 +48,11 @@ class FileStorage:
             json.dump(new_dict,json_file)
 
     def reload(self):
-         """
-        Deserializes the JSON file to __objects
-        Only if the JSON file exists, otherwise do nothing
         """
+            Deserializes the JSON file to __objects
+            Only if the JSON file exists, otherwise do nothing
+        """
+        
         if os.path.exists(FileStorage.__file_path):
             try:
                 with open(FileStorage.__file_path, 'r', encoding='utf-8') as f:
@@ -65,4 +66,4 @@ class FileStorage:
                         FileStorage.__objects[key] = BaseModel(**value)
             except Exception:
                 pass
-            
+        
