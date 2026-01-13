@@ -14,8 +14,8 @@ class FileStorage:
     """
     
     #private attributes
-    __file_path:"file.json"
-    __objects : {}
+    __file_path ="file.json"
+    __objects = {}
         
     def all(self):
         """returns all the objects in filestorage and we fetch them from __objects dict
@@ -52,7 +52,7 @@ class FileStorage:
             Deserializes the JSON file to __objects
             Only if the JSON file exists, otherwise do nothing
         """
-        
+
         if os.path.exists(FileStorage.__file_path):
             try:
                 with open(FileStorage.__file_path, 'r', encoding='utf-8') as f:
@@ -66,4 +66,4 @@ class FileStorage:
                         FileStorage.__objects[key] = BaseModel(**value)
             except Exception:
                 pass
-        
+               
