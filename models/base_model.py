@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import uuid
 from datetime import datetime
-from models import storage
 class BaseModel:
     """
     defines all common attributes/methods for other classes
@@ -10,7 +9,7 @@ class BaseModel:
         """
         class initilization
         """
-        
+        from models import storage
         
         if kwargs:
             for key , value in kwargs.items():
@@ -34,6 +33,8 @@ class BaseModel:
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
     
     def save(self):
+        from models import storage
+
         """
         perfoms dave operation by updataing self.updated_at to the current time 
         """
