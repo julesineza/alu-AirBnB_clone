@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+command interpreter console.py using cmd module python
+"""
 
 import cmd 
 class HBNBCommand(cmd.Cmd):
